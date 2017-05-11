@@ -25,6 +25,7 @@ import stone.database.transaction.TransactionDAO;
 import stone.database.transaction.TransactionObject;
 import stone.providers.ActiveApplicationProvider;
 import stone.providers.BluetoothConnectionProvider;
+import stone.providers.DisplayMessageProvider;
 import stone.providers.CancellationProvider;
 import stone.providers.LoadTablesProvider;
 import stone.providers.SendEmailProvider;
