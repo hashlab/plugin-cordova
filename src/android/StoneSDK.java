@@ -2,10 +2,14 @@ package br.com.stone.cordova.sdk;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -23,8 +27,10 @@ import stone.providers.ActiveApplicationProvider;
 import stone.providers.BluetoothConnectionProvider;
 import stone.providers.CancellationProvider;
 import stone.providers.LoadTablesProvider;
+import stone.providers.SendEmailProvider;
 import stone.providers.TransactionProvider;
 import stone.user.UserModel;
+import stone.utils.EmailClient;
 import stone.utils.GlobalInformations;
 import stone.utils.PinpadObject;
 import stone.utils.Stone;
@@ -36,6 +42,7 @@ public class StoneSDK extends CordovaPlugin {
 
     private static final String DEVICE = "device";
     private static final String DEVICE_SELECTED = "deviceSelected";
+    private static final String IS_DEVICE_CONNECTED = "isDeviceConnected";
     private static final String TRANSACTION = "transaction";
     private static final String TRANSACTION_CANCEL = "transactionCancel";
     private static final String TRANSACTION_LIST = "transactionList";
@@ -59,13 +66,17 @@ public class StoneSDK extends CordovaPlugin {
         } else if (action.equals(TRANSACTION_LIST)) {
             transactionList(callbackContext);
             return true;
+        } else if (action.equals(IS_DEVICE_CONNECTED)) {
+            bluetoothIsConnected(callbackContext);
+            return true;
         } else if (action.equals(VALIDATION)) {
             List<UserModel> user = StoneStart.init(this.cordova.getActivity());
             if (user == null)  {
                 stoneCodeValidation(data, callbackContext);
                 return true;
             } else {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode já cadastrado", Toast.LENGTH_SHORT).show();
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode já cadastrado", Toast.LENGTH_SHORT).show(); */
+                callbackContext.success();
                 return true;
             }
         } else {
@@ -101,6 +112,15 @@ public class StoneSDK extends CordovaPlugin {
         }
     }
 
+    private void bluetoothIsConnected(CallbackContext callbackContext) throws JSONException {
+        // Lista de Pinpads para passar para o BluetoothConnectionProvider.
+        Boolean isConnected = GlobalInformations.getPinpadListSize() != null &&
+               GlobalInformations.getPinpadListSize() > 0     &&
+               GlobalInformations.getPinpadFromListAt(0) != null;
+
+        callbackContext.success(isConnected);
+    }
+
     private void bluetoothSelected(JSONArray data, final CallbackContext callbackContext) throws JSONException {
         // Pega o pinpad selecionado.
         String arrayList = data.getString(0);
@@ -120,12 +140,12 @@ public class StoneSDK extends CordovaPlugin {
 
             public void onSuccess() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Pinpad conectado", Toast.LENGTH_SHORT).show();
-                callbackContext.success();
+                callbackContext.success();                
             }
 
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro durante a conexao. Verifique a lista de erros do provider para mais informacoes", Toast.LENGTH_SHORT).show();
-                callbackContext.error("Erro durante a conexao. Verifique a lista de erros do provider para mais informacoes");
+                callbackContext.error("Testando agora erro");                              
             }
 
         });
@@ -152,13 +172,13 @@ public class StoneSDK extends CordovaPlugin {
             /* Metodo chamado se for executado sem erros */
             public void onSuccess() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Ativado com sucesso, iniciando o aplicativo", Toast.LENGTH_SHORT).show();
-                callbackContext.success();
+                callbackContext.success();                
             }
 
             /* Metodo chamado caso ocorra alguma excecao */
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativacao do aplicativo, verifique a lista de erros do provider", Toast.LENGTH_SHORT).show();
-                callbackContext.error("Erro na ativacao do aplicativo, verifique a lista de erros do provider");
+                callbackContext.error("Erro na ativacao do aplicativo, verifique a lista de erros do provider");              
             }
 
         });
@@ -176,18 +196,36 @@ public class StoneSDK extends CordovaPlugin {
         JSONArray arrayList = new JSONArray();
 
         for (TransactionObject list : transactionObjects) {
+            JSONObject trx = new JSONObject();
+
             String id = String.valueOf(list.getIdFromBase());
             String amount = list.getAmount();
             String status = String.valueOf(list.getTransactionStatus());
+            String initiatorKey = String.valueOf(list.getInitiatorTransactionKey());
+            String rcptTrx = String.valueOf(list.getRecipientTransactionIdentification());
+            String cardHolder = String.valueOf(list.getCardHolderName());
+            String cardNumber = String.valueOf(list.getCardHolderNumber());
+            String cardBrand = String.valueOf(list.getCardBrand());
+            String authotizationCode = String.valueOf(list.getAuthorizationCode());
+            
+            /* trx.put("mpos_id", id); */
+            /* trx.put("amount", amount); */
+            /* trx.put("status", status); */
+            /* trx.put("initiatorKey", initiatorKey); */
+            /* trx.put("rcptTrx", rcptTrx); */
+            /* trx.put("cardHolder", cardHolder); */
+            /* trx.put("cardNumber", cardNumber); */
+            /* trx.put("cardBrand", cardBrand); */
+            /* trx.put("authotizationCode", authotizationCode); */
 
             arrayList.put(id + "_" + amount + "_" + status);
-
         }
+
         callbackContext.success(arrayList);
         System.out.println("arrayList: " + arrayList);
     }
 
-    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException  {
+    private void transactionCancel(JSONArray data, CallbackContext callbackContext) throws JSONException  {
         System.out.println("Opção Selecionada Cancel");
 
         String transactionCode = data.getString(0);
@@ -208,14 +246,13 @@ public class StoneSDK extends CordovaPlugin {
         cancellationProvider.setConnectionCallback(new StoneCallbackInterface() { // chamada de retorno.
             public void onSuccess() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), cancellationProvider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
-                callbackContext.success();
             }
 
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId, Toast.LENGTH_SHORT).show();
-                callbackContext.error("Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId);
             }
         });
+        callbackContext.success();
         cancellationProvider.execute();
     }
 
@@ -260,7 +297,8 @@ public class StoneSDK extends CordovaPlugin {
 
         provider.setConnectionCallback(new StoneCallbackInterface() {
             public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Transação enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO.", Toast.LENGTH_SHORT).show();
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Transação enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO.", Toast.LENGTH_SHORT).show(); */
+                callbackContext.success();                
             }
 
             public void onError() {
@@ -271,16 +309,18 @@ public class StoneSDK extends CordovaPlugin {
                     loadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
                     loadTablesProvider.setConnectionCallback(new StoneCallbackInterface() {
                         public void onSuccess() {
-                            Toast.makeText(StoneSDK.this.cordova.getActivity(), "Sucesso.", Toast.LENGTH_SHORT).show();
-                            callbackContext.success();
+                            Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas atualizadas.", Toast.LENGTH_SHORT).show();
+                            callbackContext.error("Transação falhou");
                         }
 
                         public void onError() {
-                            Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro.", Toast.LENGTH_SHORT).show();
-                            callbackContext.error("Erro.");
+                            /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro.", Toast.LENGTH_SHORT).show(); */
+                            callbackContext.error("Transação falhou");                        
                         }
                     });
                     loadTablesProvider.execute();
+                } else {
+                  callbackContext.error("Transação falhou");                        
                 }
             }
         });
