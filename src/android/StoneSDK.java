@@ -114,9 +114,7 @@ public class StoneSDK extends CordovaPlugin {
 
     private void bluetoothIsConnected(CallbackContext callbackContext) throws JSONException {
         // Lista de Pinpads para passar para o BluetoothConnectionProvider.
-        Boolean isConnected = GlobalInformations.getPinpadListSize() != null &&
-               GlobalInformations.getPinpadListSize() > 0     &&
-               GlobalInformations.getPinpadFromListAt(0) != null;
+        Boolean isConnected = GlobalInformations.isConnectedToPinpad();
 
         callbackContext.success(isConnected);
     }
