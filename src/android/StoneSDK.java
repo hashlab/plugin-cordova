@@ -42,6 +42,7 @@ public class StoneSDK extends CordovaPlugin {
 
     private static final String DEVICE = "device";
     private static final String DEVICE_SELECTED = "deviceSelected";
+    private static final String DEVICE_DISPLAY = "deviceDisplay";
     private static final String IS_DEVICE_CONNECTED = "isDeviceConnected";
     private static final String TRANSACTION = "transaction";
     private static final String TRANSACTION_CANCEL = "transactionCancel";
@@ -56,6 +57,9 @@ public class StoneSDK extends CordovaPlugin {
             return true;
         } else if (action.equals(DEVICE_SELECTED)) {
             bluetoothSelected(data, callbackContext);
+            return true;
+        } else if (action.equals(DEVICE_DISPLAY)) {
+            bluetoothDisplay(data, callbackContext);
             return true;
         } else if (action.equals(TRANSACTION)) {
             transaction(data, callbackContext);
@@ -149,6 +153,29 @@ public class StoneSDK extends CordovaPlugin {
 
         });
         bluetoothConnectionProvider.execute(); // Executa o provider de conexão bluetooth.
+    }
+
+    private void bluetoothDisplay(JSONArray data, final CallbackContext callbackContext) throws JSONException {
+        // Pega o pinpad selecionado.
+        String displayMessage = data.getString(0);
+
+        DisplayMessageProvider displayMessageProvider = new DisplayMessageProvider(StoneSDK.this.cordova.getActivity(), displayMessage, Stone.getPinpadFromListAt(0));
+        /* displayMessageProvider.setDialogMessage("Criando conexao com o pinpad selecionado"); // Mensagem exibida do dialog. */
+        displayMessageProvider.setWorkInBackground(false); // Informa que haverá um feedback para o usuário.
+        displayMessageProvider.setConnectionCallback(new StoneCallbackInterface() {
+
+            public void onSuccess() {
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Pinpad conectado", Toast.LENGTH_SHORT).show(); */
+                callbackContext.success();                
+            }
+
+            public void onError() {
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro durante a conexao. Verifique a lista de erros do provider para mais informacoes", Toast.LENGTH_SHORT).show(); */
+                callbackContext.error("Testando agora erro");                              
+            }
+
+        });
+        displayMessageProvider.execute();
     }
 
     private void stoneCodeValidation(JSONArray data, final CallbackContext callbackContext) throws JSONException {

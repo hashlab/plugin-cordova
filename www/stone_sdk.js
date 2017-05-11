@@ -8,6 +8,9 @@ module.exports = {
   isDeviceConnected: function (successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "isDeviceConnected", []);
   },
+  deviceDisplay: function (arrayList, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, "StoneSDK", "deviceDisplay", [arrayList]);  
+  },
   transaction: function (amount, method, instalments, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "transaction", [amount, method, instalments]);
   },
