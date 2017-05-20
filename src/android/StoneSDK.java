@@ -212,12 +212,15 @@ public class StoneSDK extends CordovaPlugin {
         activeApplicationProvider.execute();
     }
 
-    private void transactionList(CallbackContext callbackContext) {
+    private void transactionList(CallbackContext callbackContext) throws JSONException {
         // acessa todas as transacoes do banco de dados
         TransactionDAO transactionDAO = new TransactionDAO(StoneSDK.this.cordova.getActivity());
 
         // cria uma lista com todas as transacoes
         List<TransactionObject> transactionObjects = transactionDAO.getAllTransactionsOrderByIdDesc();
+
+        UserModel userModel = Stone.getUserModel(0);
+        String sak = String.valueOf(userModel.getMerchantSak());
 
         // exibe todas as transações (neste caso valor e status) para o usuario
         JSONArray arrayList = new JSONArray();
@@ -235,17 +238,18 @@ public class StoneSDK extends CordovaPlugin {
             String cardBrand = String.valueOf(list.getCardBrand());
             String authotizationCode = String.valueOf(list.getAuthorizationCode());
             
-            /* trx.put("mpos_id", id); */
-            /* trx.put("amount", amount); */
-            /* trx.put("status", status); */
-            /* trx.put("initiatorKey", initiatorKey); */
-            /* trx.put("rcptTrx", rcptTrx); */
-            /* trx.put("cardHolder", cardHolder); */
-            /* trx.put("cardNumber", cardNumber); */
-            /* trx.put("cardBrand", cardBrand); */
-            /* trx.put("authotizationCode", authotizationCode); */
+            trx.put("mpos_id", id);
+            trx.put("sak", sak);
+            trx.put("amount", amount);
+            trx.put("status", status);
+            trx.put("initiatorKey", initiatorKey);
+            trx.put("rcptTrx", rcptTrx);
+            trx.put("cardHolder", cardHolder);
+            trx.put("cardNumber", cardNumber);
+            trx.put("cardBrand", cardBrand);
+            trx.put("authotizationCode", authotizationCode);
 
-            arrayList.put(id + "_" + amount + "_" + status);
+            arrayList.put(trx);
         }
 
         callbackContext.success(arrayList);
