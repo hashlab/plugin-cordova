@@ -204,7 +204,7 @@ public class StoneSDK extends CordovaPlugin {
 
             /* Metodo chamado caso ocorra alguma excecao */
             public void onError() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativacao do aplicativo, verifique a lista de erros do provider", Toast.LENGTH_SHORT).show();
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativacao do aplicativo, verifique a lista de erros do provider", Toast.LENGTH_SHORT).show(); */
                 callbackContext.error("Erro na ativacao do aplicativo, verifique a lista de erros do provider");              
             }
 
