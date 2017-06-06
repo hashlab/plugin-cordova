@@ -33,43 +33,21 @@
 
         <source-file src="src/android/StoneSDK.java" target-dir="src/br/com/stone/cordova/sdk/" />
         <source-file src="src/android/libs/sdk_stone_2.2.10_fat.jar" target-dir="libs" />
+
     </platform>
 
     <!-- iOS -->
     <platform name="ios">
+
         <config-file target="config.xml" parent="/widget">
             <feature name="StoneSDK">
                 <param name="ios-package" value="StoneSDK" />
             </feature>
         </config-file>
 
-        <!--<config-file target="*-Info.plist" parent="CFBundleURLTypes">-->
-            <!--<key>NSAppTransportSecurity</key>-->
-            <!--<dict>-->
-                <!--<key>NSExceptionDomains</key>-->
-                <!--<dict>-->
-                    <!--<key>stone.com.br</key>-->
-                    <!--<dict>-->
-                        <!--<key>NSExceptionMinimumTLSVersion</key>-->
-                        <!--<string>TLSV1.2</string>-->
-                        <!--<key>NSExceptionRequiresForwardSecrecy</key>-->
-                        <!--<false/>-->
-                        <!--<key>NSIncludesSubdomains</key>-->
-                        <!--<true/>-->
-                    <!--</dict>-->
-                <!--</dict>-->
-            <!--</dict>-->
-            <!--<key>UISupportedExternalAccessoryProtocols</key>-->
-            <!--<array>-->
-                <!--<string>com.paxsz.iPOS</string>-->
-                <!--<string>br.com.gertec.protocoloGertec</string>-->
-            <!--</array>-->
-        <!--</config-file>-->
-
         <header-file src="src/ios/StoneSDK.h" target-dir="StoneSDK" />
         <source-file src="src/ios/StoneSDK.m" target-dir="StoneSDK" />
 
-      <!--<source-file src="src/ios/libs/StoneSDK.framework" framework="true" />-->
     </platform>
 
 </plugin>

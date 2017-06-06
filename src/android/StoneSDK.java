@@ -30,12 +30,14 @@ import stone.providers.CancellationProvider;
 import stone.providers.LoadTablesProvider;
 import stone.providers.SendEmailProvider;
 import stone.providers.TransactionProvider;
+import stone.providers.DownloadTablesProvider;
 import stone.user.UserModel;
 import stone.utils.EmailClient;
 import stone.utils.GlobalInformations;
 import stone.utils.PinpadObject;
 import stone.utils.Stone;
 import stone.utils.StoneTransaction;
+import stone.cache.ApplicationCache;
 
 public class StoneSDK extends CordovaPlugin {
 
@@ -49,6 +51,8 @@ public class StoneSDK extends CordovaPlugin {
     private static final String TRANSACTION_CANCEL = "transactionCancel";
     private static final String TRANSACTION_LIST = "transactionList";
     private static final String VALIDATION = "validation";
+    private static final String TABLES_DOWNLOAD = "tablesDownload";
+    private static final String TABLES_UPDATE = "tablesUpdate";
 
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
@@ -84,6 +88,12 @@ public class StoneSDK extends CordovaPlugin {
                 callbackContext.success();
                 return true;
             }
+        } else if (action.equals(TABLES_DOWNLOAD)) {
+            tablesDownload(callbackContext);
+            return true;
+        } else if (action.equals(TABLES_UPDATE)) {
+            tablesUpdate(callbackContext);
+            return true;
         } else {
             return false;
         }
@@ -205,7 +215,7 @@ public class StoneSDK extends CordovaPlugin {
             /* Metodo chamado caso ocorra alguma excecao */
             public void onError() {
                 /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativacao do aplicativo, verifique a lista de erros do provider", Toast.LENGTH_SHORT).show(); */
-                callbackContext.error("Erro na ativacao do aplicativo, verifique a lista de erros do provider");              
+                callbackContext.error(activeApplicationProvider.getListOfErrors().toString());
             }
 
         });
@@ -277,13 +287,14 @@ public class StoneSDK extends CordovaPlugin {
         cancellationProvider.setConnectionCallback(new StoneCallbackInterface() { // chamada de retorno.
             public void onSuccess() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), cancellationProvider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
+                callbackContext.success("Cancelado com sucesso");
             }
 
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId, Toast.LENGTH_SHORT).show();
+                callbackContext.error(cancellationProvider.getListOfErrors().toString() + " Erro ocorreu durante o cancelamento da transacao de id: " + transacionId);
             }
         });
-        callbackContext.success();
         cancellationProvider.execute();
     }
 
@@ -334,8 +345,9 @@ public class StoneSDK extends CordovaPlugin {
 
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), provider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
+                callbackContext.error(provider.getListOfErrors().toString());
                 if (provider.theListHasError(ErrorsEnum.NEED_LOAD_TABLES) == true) { // code 20
-                    LoadTablesProvider loadTablesProvider = new LoadTablesProvider(StoneSDK.this.cordova.getActivity(), provider.getGcrRequestCommand(), GlobalInformations.getPinpadFromListAt(0));
+                    final LoadTablesProvider loadTablesProvider = new LoadTablesProvider(StoneSDK.this.cordova.getActivity(), provider.getGcrRequestCommand(), GlobalInformations.getPinpadFromListAt(0));
                     loadTablesProvider.setDialogMessage("Subindo as tabelas");
                     loadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
                     loadTablesProvider.setConnectionCallback(new StoneCallbackInterface() {
@@ -356,6 +368,37 @@ public class StoneSDK extends CordovaPlugin {
             }
         });
         provider.execute();
+    }
+
+    private void tablesDownload(final CallbackContext callbackContext) throws JSONException  {
+
+        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele irá baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessário.
+        ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
+        if (!applicationCache.checkIfHasTables()) {
+            // Realiza processo de download das tabelas em sua totalidade.
+            final DownloadTablesProvider downloadTablesProvider = new DownloadTablesProvider(StoneSDK.this.cordova.getActivity(), Stone.getUserModel(0));
+            downloadTablesProvider.setDialogMessage("Baixando as tabelas, por favor aguarde");
+            downloadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
+            downloadTablesProvider.setConnectionCallback(new StoneCallbackInterface() {
+                public void onSuccess() {
+                    Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas baixadas com sucesso.", Toast.LENGTH_SHORT).show();
+                    callbackContext.success("Tabelas baixadas com sucesso.");
+                }
+                public void onError() {
+                    Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro ao baixar tabelas.", Toast.LENGTH_SHORT).show();
+                    callbackContext.error(downloadTablesProvider.getListOfErrors().toString());
+                }
+            });
+            downloadTablesProvider.execute();
+        } else {
+            callbackContext.success("Não há tabelas para baixar, elas já estão atualizadas.");
+        }
+
+    }
+
+    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException  {
+        Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela é atualizada na hora de fazer a transação.", Toast.LENGTH_SHORT).show();
+        callbackContext.success("Tabela é atualizada na hora de fazer a transação.");
     }
 
 }

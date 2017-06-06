@@ -26,18 +26,29 @@ Este plugin é um exemplo de como utilizar a SDK da Stone no Cordova/Ionic.
 
 ## Exemplo de como utilizar
 
-[demo-sdk-cordova](https://github.com/stone-pagamentos/demo-sdk-cordova)
+- [demo-sdk-cordova](https://github.com/stone-pagamentos/demo-sdk-cordova)
 
 ## Documentação da SDK
 
-[GitBook](https://stone-pagamentos.gitbooks.io/sdk-android/)
+- [Android](https://stone-pagamentos.gitbooks.io/sdk-android/)
+- [iOS](https://github.com/stone-pagamentos/sdk-ios-v2)
 
 ## Plataformas Suportadas
 
 - Android
-- iOS (Em Breve)
+- iOS
 
-## Instalação
+## Instalação das SDKs
+
+### Android
+
+A SDK do Android já está no plugin, mas também pode ser encontrada [aqui](https://github.com/stone-pagamentos/sdk-android-V2)
+
+### iOS
+
+A SDK do iOS pode ser encontrada [aqui](https://github.com/stone-pagamentos/sdk-ios-v2/releases)
+
+## Instalação do Plugin
 
     $ cordova plugin add https://github.com/stone-pagamentos/plugin-cordova.git
 
@@ -51,6 +62,8 @@ Este plugin é um exemplo de como utilizar a SDK da Stone no Cordova/Ionic.
 - [stone_sdk.transaction](#transaction)
 - [stone_sdk.transactionList](#transactionlist)
 - [stone_sdk.transactionCancel](#transactioncancel)
+- [stone_sdk.tablesDownload](#tablesdownload)
+- [stone_sdk.tablesUpdate](#tablesupdate)
 
 
 ## validation
@@ -146,5 +159,35 @@ A função `transactionCancel` é responsável pelo cancelamento da transação 
 ### Parâmetros
 
 - __idTransaction_amountTransaction_statusTransaction__: Id da transação, valor transacionado e o seu status.
+- __success__: Callback de sucesso.
+- __failure__: Callback de falha.
+
+## tablesDownload
+
+Realiza o download das tabelas.
+
+    stone_sdk.tablesDownload(success, failure);
+
+### Descrição
+
+A função `tablesDownload` é responsável por realizar o download das tabelas. Se o download ocorrer com sucesso, a função irá chamar o callback de sucesso, caso contrário, será chamado o callback de falha.
+
+### Parâmetros
+
+- __success__: Callback de sucesso.
+- __failure__: Callback de falha.
+
+## tablesUpdate
+
+Realiza o carregamento das tabelas.
+
+    stone_sdk.tablesUpdate(success, failure);
+
+### Descrição
+
+A função `tablesUpdate` é responsável por realizar o carregamento das tabelas. Se o carregamento ocorrer com sucesso, a função irá chamar o callback de sucesso, caso contrário, será chamado o callback de falha.
+
+### Parâmetros
+
 - __success__: Callback de sucesso.
 - __failure__: Callback de falha.

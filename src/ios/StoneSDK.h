@@ -7,8 +7,10 @@
 - (void) device:(CDVInvokedUrlCommand*)command;
 - (void) transaction:(CDVInvokedUrlCommand*)command;
 - (void) transactionList:(CDVInvokedUrlCommand*)command;
+- (void) transactionCancel:(CDVInvokedUrlCommand*)command;
+- (void) tablesDownload:(CDVInvokedUrlCommand*)command;
+- (void) tablesUpdate:(CDVInvokedUrlCommand*)command;
 
-@property (strong, nonatomic) UIView *overlayView;
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) STNTransactionModel *transaction;
 
 @end
