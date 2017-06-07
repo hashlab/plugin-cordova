@@ -26,22 +26,22 @@
     // Efetua a conexão com o pinpad
     [STNPinPadConnectionProvider connectToPinpad:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            UIAlertView *success = [[UIAlertView alloc]
-                                    initWithTitle:@"Ativado!"
-                                    message:@"Pareado com sucesso!"
-                                    delegate:self
-                                    cancelButtonTitle:@"Ok"
-                                    otherButtonTitles:nil];
-            [success show];
+            /* UIAlertView *success = [[UIAlertView alloc] */
+            /*                         initWithTitle:@"Ativado!" */
+            /*                         message:@"Pareado com sucesso!" */
+            /*                         delegate:self */
+            /*                         cancelButtonTitle:@"Ok" */
+            /*                         otherButtonTitles:nil]; */
+            /* [success show]; */
         } else {
             NSString* msg = error.description;
-            UIAlertView *fail = [[UIAlertView alloc]
-                                 initWithTitle:@"Oops!"
-                                 message:msg
-                                 delegate:self
-                                 cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
-            [fail show];
+            /* UIAlertView *fail = [[UIAlertView alloc] */
+            /*                      initWithTitle:@"Oops!" */
+            /*                      message:msg */
+            /*                      delegate:self */
+            /*                      cancelButtonTitle:@"Ok" */
+            /*                      otherButtonTitles:nil]; */
+            /* [fail show]; */
         }
     }];
 }
@@ -51,12 +51,10 @@
   CDVPluginResult* result;
   if ([STNValidationProvider validatePinpadConnection] == YES) {
     NSLog(@"Pinpad está conectado ao celular");
-    NSLog(@"%@", [STNValidationProvider validatePinpadConnection]);    
     NSString* msg = @"true";
     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
   } else {
     NSLog(@"Pinpad não está conectado ao celular");
-    NSLog(@"%@", [STNValidationProvider validatePinpadConnection]);
     NSString* msg = @"false";
     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
   }
