@@ -46,6 +46,26 @@
     }];
 }
 
+- (void)deviceDisplay:(CDVInvokedUrlCommand*)command {
+
+    // Recebe a mensagem
+    NSString* message = [[command arguments] objectAtIndex:0];
+
+    [STNDisplayProvider displayMessage:message withBlock:^(BOOL succeeded, NSError *error) {
+        CDVPluginResult* result;
+        if (succeeded) {
+            NSLog(@"Mensagem enviada para pinpad.");
+            NSString* msg = @"Mensagem enviada para pinpad.";
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
+        } else {
+            NSLog(@"%@", error.description);
+            NSString* msg = error.description;
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];        
+    }];
+}
+
 - (void)transaction:(CDVInvokedUrlCommand*)command {
 
     // Recebe o valor do Plugin
