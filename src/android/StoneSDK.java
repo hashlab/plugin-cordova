@@ -208,13 +208,13 @@ public class StoneSDK extends CordovaPlugin {
 
             /* Metodo chamado se for executado sem erros */
             public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Ativado com sucesso, iniciando o aplicativo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Afiliação ativada com sucesso", Toast.LENGTH_SHORT).show();
                 callbackContext.success();                
             }
 
             /* Metodo chamado caso ocorra alguma excecao */
             public void onError() {
-                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativacao do aplicativo, verifique a lista de erros do provider", Toast.LENGTH_SHORT).show(); */
+                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro na ativação da afiliação, entre em contato com suporte.", Toast.LENGTH_SHORT).show();
                 callbackContext.error(activeApplicationProvider.getListOfErrors().toString());
             }
 
