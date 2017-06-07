@@ -262,6 +262,9 @@
 - (void)transactionList:(CDVInvokedUrlCommand*)command {
 
     NSArray *transactions = [STNTransactionListProvider listTransactions];
+    NSArray *merchantsList = [STNMerchantListProvider listMerchants];
+
+    STNMerchantModel *merchant  = [merchantsList objectAtIndex:0];
 
     STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
     NSLog(@"transactionInfoProvider, %@", transactionInfoProvider);
@@ -270,22 +273,43 @@
     int centsValue = [transactionInfoProvider.amount intValue];
     float realValue = centsValue*0.01;
     NSString *amount = [NSString stringWithFormat:@"%.02f", realValue];
+    NSString *sak = merchant.saleAffiliationKey;
 
     // Tratamento do status.
     NSString *shortStatus;
     if ([transactionInfoProvider.statusString isEqual: @"Transação Aprovada"]) {
-        shortStatus = @"Aprovada";
+        shortStatus = @"APPROVED";
     } else if ([transactionInfoProvider.statusString isEqual:@"Transação Cancelada"]) {
-        shortStatus = @"Cancelada";
+        shortStatus = @"REFUSED";
     } else {
         shortStatus = transactionInfoProvider.statusString;
     }
 
     NSString * date = transactionInfoProvider.dateString;
+    NSString *holderName = transactionInfoProvider.cardHolderName;
+    NSString *pan = transactionInfoProvider.pan;
+    NSString *cardbrand = [transactionInfoProvider.cardBrand lowercaseString];
+    NSString *authCode = transactionInfoProvider.authorizationCode;
+    NSString *initKey = transactionInfoProvider.initiatorTransactionKey;
+    NSString *rcptTransaction = transactionInfoProvider.receiptTransactionKey;
+    NSString *mposId = transactionInfoProvider.aid;
 
     NSString *idTransaction = [NSString stringWithFormat: @"R$ %@\n%@\n%@", amount, shortStatus, date];
 
-    NSArray *msg = [NSArray arrayWithObjects:idTransaction, nil];
+    NSDictionary *dict = @{
+      @mpos_id: mposId,
+      @sak: sak,
+      @amount: centsValue,
+      @status: shortStatus,
+      @initiatorKey: initKey,
+      @rcptTrx: rcptTransaction,
+      @cardHolder: holderName,
+      @cardNumber: pan,
+      @cardBrand: cardbrand,
+      @authotizationCode: authCode
+    };
+
+    NSArray *msg = [NSArray arrayWithObjects:dict, nil];
 
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
