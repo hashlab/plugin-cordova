@@ -271,8 +271,8 @@
 
     // Tratamento do amount somente para exibição.
     int centsValue = [transactionInfoProvider.amount intValue];
-    float realValue = centsValue*0.01;
-    NSString *amount = [NSString stringWithFormat:@"%.02f", realValue];
+    float realValue = centsValue*1;
+    NSString *amount = [NSString stringWithFormat:@"%.f", realValue];
     NSString *sak = merchant.saleAffiliationKey;
 
     // Tratamento do status.
@@ -289,7 +289,7 @@
     NSString *holderName = transactionInfoProvider.cardHolderName;
     NSString *pan = transactionInfoProvider.pan;
     NSString *cardbrand = [transactionInfoProvider.cardBrand lowercaseString];
-    NSString *authCode = transactionInfoProvider.authorizationCode;
+    NSString *authCode = transactionInfoProvider.authorisationCode;
     NSString *initKey = transactionInfoProvider.initiatorTransactionKey;
     NSString *rcptTransaction = transactionInfoProvider.receiptTransactionKey;
     NSString *mposId = transactionInfoProvider.aid;
@@ -299,7 +299,7 @@
     NSDictionary *dict = @{
       @"mpos_id": mposId,
       @"sak": sak,
-      @"amount": centsValue,
+      @"amount": amount,
       @"status": shortStatus,
       @"initiatorKey": initKey,
       @"rcptTrx": rcptTransaction,
