@@ -297,16 +297,16 @@
     NSString *idTransaction = [NSString stringWithFormat: @"R$ %@\n%@\n%@", amount, shortStatus, date];
 
     NSDictionary *dict = @{
-      @mpos_id: mposId,
-      @sak: sak,
-      @amount: centsValue,
-      @status: shortStatus,
-      @initiatorKey: initKey,
-      @rcptTrx: rcptTransaction,
-      @cardHolder: holderName,
-      @cardNumber: pan,
-      @cardBrand: cardbrand,
-      @authotizationCode: authCode
+      @"mpos_id": mposId,
+      @"sak": sak,
+      @"amount": centsValue,
+      @"status": shortStatus,
+      @"initiatorKey": initKey,
+      @"rcptTrx": rcptTransaction,
+      @"cardHolder": holderName,
+      @"cardNumber": pan,
+      @"cardBrand": cardbrand,
+      @"authotizationCode": authCode
     };
 
     NSArray *msg = [NSArray arrayWithObjects:dict, nil];
