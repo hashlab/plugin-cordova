@@ -46,6 +46,21 @@
     }];
 }
 
+- (void)isDeviceConnected:(CDVInvokedUrlCommand*)command {
+
+  CDVPluginResult* result;
+  if ([STNValidationProvider validatePinpadConnection] == YES) {
+    NSLog(@"Pinpad está conectado ao celular");
+    NSString* msg = @"true";
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
+  } else {
+    NSLog(@"Pinpad não está conectado ao celular");
+    NSString* msg = @"false";
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
+  }
+  [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];        
+}
+
 - (void)deviceDisplay:(CDVInvokedUrlCommand*)command {
 
     // Recebe a mensagem

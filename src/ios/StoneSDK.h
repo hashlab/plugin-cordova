@@ -5,6 +5,7 @@
 
 - (void) validation:(CDVInvokedUrlCommand*)command;
 - (void) device:(CDVInvokedUrlCommand*)command;
+- (void) isDeviceConnected:(CDVInvokedUrlCommand*)command;
 - (void) deviceDisplay:(CDVInvokedUrlCommand*)command;
 - (void) transaction:(CDVInvokedUrlCommand*)command;
 - (void) transactionList:(CDVInvokedUrlCommand*)command;
