@@ -266,7 +266,7 @@ public class StoneSDK extends CordovaPlugin {
         System.out.println("arrayList: " + arrayList);
     }
 
-    private void transactionCancel(JSONArray data, CallbackContext callbackContext) throws JSONException  {
+    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException  {
         System.out.println("Opção Selecionada Cancel");
 
         String transactionCode = data.getString(0);
