@@ -127,91 +127,91 @@
             NSLog(@"ONE_INSTALMENT");
         } else if ([instalments isEqual: @"TWO_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTwo;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"TWO_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"THREE_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountThree;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"THREE_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"FOUR_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountFour;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"FOUR_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"FIVE_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountFive;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"FIVE_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"SIX_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountSix;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"SIX_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"SEVEN_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountSeven;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"SEVEN_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"EIGHT_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountEight;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"EIGHT_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"NINE_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountNine;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"NINE_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"TEN_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTen;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"TEN_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"ELEVEN_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountEleven;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"ELEVEN_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"TWELVE_INSTALMENT_NO_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTwelve;
-            transaction.instalmentType = STNInstalmentTypeNone;
+            transaction.instalmentType = STNInstalmentTypeMerchant;
             NSLog(@"TWELVE_INSTALMENT_NO_INTEREST");
         } else if ([instalments isEqual: @"TWO_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTwo;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"TWO_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"THREE_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountThree;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"THREE_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"FOUR_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountFour;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"FOUR_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"FIVE_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountFive;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"FIVE_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"SIX_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountSix;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"SIX_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"SEVEN_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountSeven;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"SEVEN_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"EIGHT_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountEight;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"EIGHT_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"NINE_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountNine;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"NINE_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"TEN_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTen;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"TEN_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"ELEVEN_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountEleven;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"ELEVEN_INSTALMENT_WITH_INTEREST");
         } else if ([instalments isEqual: @"TWELVE_INSTALMENT_WITH_INTEREST"]) {
             transaction.instalmentAmount = STNTransactionInstalmentAmountTwelve;
-            transaction.instalmentType = STNInstalmentTypeMerchant;
+            transaction.instalmentType = STNInstalmentTypeIssuer;
             NSLog(@"TWELVE_INSTALMENT_WITH_INTEREST");
         } else {
             NSLog(@"Escolha uma opção válida");
