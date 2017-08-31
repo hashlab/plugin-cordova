@@ -282,16 +282,16 @@ public class StoneSDK extends CordovaPlugin {
         final int transacionId = Integer.parseInt(idOptSelected);
 
         final CancellationProvider cancellationProvider = new CancellationProvider(StoneSDK.this.cordova.getActivity(), transacionId, Stone.getUserModel(0));
-        cancellationProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
+        cancellationProvider.setWorkInBackground(true); // para dar feedback ao usuario ou nao.
         //cancellationProvider.setDialogMessage("Cancelando...");
         cancellationProvider.setConnectionCallback(new StoneCallbackInterface() { // chamada de retorno.
             public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), cancellationProvider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), cancellationProvider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show(); */
                 callbackContext.success("Cancelado com sucesso");
             }
 
             public void onError() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId, Toast.LENGTH_SHORT).show();
+                /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId, Toast.LENGTH_SHORT).show(); */
                 callbackContext.error(cancellationProvider.getListOfErrors().toString() + " Erro ocorreu durante o cancelamento da transacao de id: " + transacionId);
             }
         });
