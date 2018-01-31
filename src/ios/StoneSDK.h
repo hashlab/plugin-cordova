@@ -3,6 +3,7 @@
 
 @interface StoneSDK : CDVPlugin
 
+- (void) setEnvironment:(CDVInvokedUrlCommand*)command;
 - (void) validation:(CDVInvokedUrlCommand*)command;
 - (void) device:(CDVInvokedUrlCommand*)command;
 - (void) isDeviceConnected:(CDVInvokedUrlCommand*)command;

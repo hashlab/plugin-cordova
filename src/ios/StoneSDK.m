@@ -2,6 +2,15 @@
 
 @implementation StoneSDK
 
+- (void)setEnvironment:(CDVInvokedUrlCommand*)command {
+    NSString* environment = [[command arguments] objectAtIndex:0];
+    if ([environment isEqual: @"SANDBOX"]) {
+        [STNConfig setEnvironment:STNEnvironmentSandbox];
+    } else if([environment isEqual: @"PRODUCTION"]) {
+        [STNConfig setEnvironment:STNEnvironmentProduction];
+    }
+}
+
 - (void)validation:(CDVInvokedUrlCommand*)command {
 
     // Recebe o Stone Code
@@ -320,9 +329,12 @@
 
 - (void)transactionCancel:(CDVInvokedUrlCommand*)command {
     NSArray *transactions = [STNTransactionListProvider listTransactions];
+    NSString* indexTransactionCancel = [[command arguments] objectAtIndex:0];
+    NSString *transactionLastCharacter = [indexTransactionCancel substringFromIndex: [indexTransactionCancel length] - 1];
+    int value = [transactionLastCharacter integerValue];
 
-    STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
-
+    STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:value];
+    
     [STNCancellationProvider cancelTransaction:transactionInfoProvider withBlock:^(BOOL succeeded, NSError *error) {
         CDVPluginResult* result;
         if (succeeded) {
@@ -336,6 +348,7 @@
     }];
 
 }
+
 
 - (void)tablesDownload:(CDVInvokedUrlCommand*)command {
 

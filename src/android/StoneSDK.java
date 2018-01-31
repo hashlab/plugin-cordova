@@ -11,6 +11,7 @@ import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ import stone.utils.PinpadObject;
 import stone.utils.Stone;
 import stone.utils.StoneTransaction;
 import stone.cache.ApplicationCache;
+import stone.environment.Environment;
 
 public class StoneSDK extends CordovaPlugin {
 
@@ -47,6 +49,7 @@ public class StoneSDK extends CordovaPlugin {
     private static final String DEVICE_SELECTED = "deviceSelected";
     private static final String DEVICE_DISPLAY = "deviceDisplay";
     private static final String IS_DEVICE_CONNECTED = "isDeviceConnected";
+    private static final String SET_ENVIRONMENT = "setEnvironment";
     private static final String TRANSACTION = "transaction";
     private static final String TRANSACTION_CANCEL = "transactionCancel";
     private static final String TRANSACTION_LIST = "transactionList";
@@ -80,7 +83,7 @@ public class StoneSDK extends CordovaPlugin {
             return true;
         } else if (action.equals(VALIDATION)) {
             List<UserModel> user = StoneStart.init(this.cordova.getActivity());
-            if (user == null)  {
+            if (user == null) {
                 stoneCodeValidation(data, callbackContext);
                 return true;
             } else {
@@ -93,6 +96,9 @@ public class StoneSDK extends CordovaPlugin {
             return true;
         } else if (action.equals(TABLES_UPDATE)) {
             tablesUpdate(callbackContext);
+            return true;
+        } else if (action.equals(SET_ENVIRONMENT)) {
+            setEnvironment(data);
             return true;
         } else {
             return false;
@@ -146,10 +152,10 @@ public class StoneSDK extends CordovaPlugin {
 
         PinpadObject pinpad = new PinpadObject(name, macAddress, false);
 
-        // Passa o pinpad selecionado para o provider de conexão bluetooth.
+        // Passa o pinpad selecionado para o provider de conexao bluetooth.
         BluetoothConnectionProvider bluetoothConnectionProvider = new BluetoothConnectionProvider(StoneSDK.this.cordova.getActivity(), pinpad);
         bluetoothConnectionProvider.setDialogMessage("Criando conexao com o pinpad selecionado"); // Mensagem exibida do dialog.
-        bluetoothConnectionProvider.setWorkInBackground(false); // Informa que haverá um feedback para o usuário.
+        bluetoothConnectionProvider.setWorkInBackground(false); // Informa que havera um feedback para o usuario.
         bluetoothConnectionProvider.setConnectionCallback(new StoneCallbackInterface() {
 
             public void onSuccess() {
@@ -163,7 +169,7 @@ public class StoneSDK extends CordovaPlugin {
             }
 
         });
-        bluetoothConnectionProvider.execute(); // Executa o provider de conexão bluetooth.
+        bluetoothConnectionProvider.execute(); // Executa o provider de conexao bluetooth.
     }
 
     private void bluetoothDisplay(JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -198,13 +204,16 @@ public class StoneSDK extends CordovaPlugin {
         final ActiveApplicationProvider activeApplicationProvider = new ActiveApplicationProvider(this.cordova.getActivity(), stoneCodeList);
         activeApplicationProvider.setDialogMessage("Ativando o aplicativo...");
         activeApplicationProvider.setDialogTitle("Aguarde");
-        activeApplicationProvider.setActivity(this.cordova.getActivity());
+
+        //Essa linha estava gerando erro no build, porem nao sei a necessidade dessa parte... Parece que ja tem implementado acima...
+        //activeApplicationProvider.setActivity(this.cordova.getActivity());
+
         activeApplicationProvider.setWorkInBackground(false); // informa se este provider ira rodar em background ou nao
         activeApplicationProvider.setConnectionCallback(new StoneCallbackInterface() {
 
-                /* Sempre que utilizar um provider, intancie esta Interface.
-                 * Ela ira lhe informar se o provider foi executado com sucesso ou nao
-                 */
+            /* Sempre que utilizar um provider, intancie esta Interface.
+             * Ela ira lhe informar se o provider foi executado com sucesso ou nao
+             */
 
             /* Metodo chamado se for executado sem erros */
             public void onSuccess() {
@@ -220,6 +229,11 @@ public class StoneSDK extends CordovaPlugin {
 
         });
         activeApplicationProvider.execute();
+    }
+
+    private void setEnvironment(JSONArray data) throws JSONException {
+        String env = data.getString(0);
+        Stone.setEnvironment(Environment.valueOf(env));
     }
 
     private void transactionList(CallbackContext callbackContext) throws JSONException {
@@ -263,22 +277,21 @@ public class StoneSDK extends CordovaPlugin {
         }
 
         callbackContext.success(arrayList);
-        System.out.println("arrayList: " + arrayList);
     }
 
-    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException  {
-        System.out.println("Opção Selecionada Cancel");
+    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException {
+        System.out.println("Opcao Selecionada Cancel");
 
         String transactionCode = data.getString(0);
         System.out.println("optSelected: " + transactionCode);
 
-        // Pega o id da transação selecionada.
+        // Pega o id da transacao selecionada.
         String[] parts = transactionCode.split("_");
 
         String idOptSelected = parts[0];
         System.out.println("idOptSelected: " + idOptSelected);
 
-        //lógica do cancelamento
+        //l�gica do cancelamento
         final int transacionId = Integer.parseInt(idOptSelected);
 
         final CancellationProvider cancellationProvider = new CancellationProvider(StoneSDK.this.cordova.getActivity(), transacionId, Stone.getUserModel(0));
@@ -301,6 +314,7 @@ public class StoneSDK extends CordovaPlugin {
     private void transaction(JSONArray data, final CallbackContext callbackContext) throws JSONException {
 
         String amount = data.getString(0);
+        final  String success_message = data.getString(3);
         System.out.println("getAmount: " + amount);
 
         // Cria o objeto de transacao. Usar o "GlobalInformations.getPinpadFromListAt"
@@ -335,6 +349,7 @@ public class StoneSDK extends CordovaPlugin {
 
         // Processo para envio da transacao.
         final TransactionProvider provider = new TransactionProvider(StoneSDK.this.cordova.getActivity(), stoneTransaction, Stone.getPinpadFromListAt(0));
+
         provider.setWorkInBackground(true);
 
         provider.setConnectionCallback(new StoneCallbackInterface() {
@@ -370,9 +385,9 @@ public class StoneSDK extends CordovaPlugin {
         provider.execute();
     }
 
-    private void tablesDownload(final CallbackContext callbackContext) throws JSONException  {
+    private void tablesDownload(final CallbackContext callbackContext) throws JSONException {
 
-        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele irá baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessário.
+        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessario.
         ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
         if (!applicationCache.checkIfHasTables()) {
             // Realiza processo de download das tabelas em sua totalidade.
@@ -384,6 +399,7 @@ public class StoneSDK extends CordovaPlugin {
                     Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas baixadas com sucesso.", Toast.LENGTH_SHORT).show();
                     callbackContext.success("Tabelas baixadas com sucesso.");
                 }
+
                 public void onError() {
                     Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro ao baixar tabelas.", Toast.LENGTH_SHORT).show();
                     callbackContext.error(downloadTablesProvider.getListOfErrors().toString());
@@ -391,14 +407,14 @@ public class StoneSDK extends CordovaPlugin {
             });
             downloadTablesProvider.execute();
         } else {
-            callbackContext.success("Não há tabelas para baixar, elas já estão atualizadas.");
+            callbackContext.success("Nao ha tabelas para baixar, elas ja estao atualizadas.");
         }
 
     }
 
-    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException  {
-        Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela é atualizada na hora de fazer a transação.", Toast.LENGTH_SHORT).show();
-        callbackContext.success("Tabela é atualizada na hora de fazer a transação.");
+    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException {
+        Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela e atualizada na hora de fazer a transacao.", Toast.LENGTH_SHORT).show();
+        callbackContext.success("Tabela e atualizada na hora de fazer a transacao.");
     }
 
 }

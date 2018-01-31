@@ -1,4 +1,7 @@
 module.exports = {
+  setEnvironment: function (environment) {
+    cordova.exec(null, null, "StoneSDK", "setEnvironment", [environment]);
+  },
   device: function (successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "device", []);
   },

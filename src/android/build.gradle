@@ -1,0 +1,16 @@
+repositories {    
+    jcenter()
+    maven { url "https://packagecloud.io/stone/sdk-android/maven2" }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'br.com.stone:stone-sdk:2.5.3'
+}
+
+android {
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+}

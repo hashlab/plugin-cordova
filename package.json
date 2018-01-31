@@ -1,0 +1,33 @@
+{
+    "version": "1.0.1",
+    "name": "cordova-plugin-stone-sdk",
+    "cordova_name": "Cordova Stone Plugin",
+    "description": "Cordova wrapper for Stone Mobile SDK",
+    "issue": "https://github.com/stone-payments/cordova-plugin-stone-sdk/issues",
+    "license": "MIT",
+    "author": {
+        "name": "Stone",
+        "email": "integracoes@stone.com.br"
+    },
+    "cordova": {
+        "id": "cordova-plugin-stone-sdk",
+        "platforms": [
+            "ios",
+            "android"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stone-payments/cordova-plugin-stone-sdk.git"
+    },
+    "keywords": [
+        "ecosystem:cordova",
+        "cordova-android",
+        "cordova-ios",
+        "ios",
+        "android",
+        "cordova"
+    ],
+    "engines": [],
+    "englishdoc": ""
+}

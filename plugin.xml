@@ -25,14 +25,14 @@
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
             <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
 
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/StoneSDK.java" target-dir="src/br/com/stone/cordova/sdk/" />
-        <source-file src="src/android/libs/sdk_stone_2.2.10_fat.jar" target-dir="libs" />
 
     </platform>
 
