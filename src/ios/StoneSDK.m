@@ -3,12 +3,12 @@
 @implementation StoneSDK
 
 - (void)setEnvironment:(CDVInvokedUrlCommand*)command {
-    NSString* environment = [[command arguments] objectAtIndex:0];
-    if ([environment isEqual: @"SANDBOX"]) {
-        [STNConfig setEnvironment:STNEnvironmentSandbox];
-    } else if([environment isEqual: @"PRODUCTION"]) {
-        [STNConfig setEnvironment:STNEnvironmentProduction];
-    }
+    /* NSString* environment = [[command arguments] objectAtIndex:0]; */
+    /* if ([environment isEqual: @"SANDBOX"]) { */
+    /*     [STNConfig setEnvironment:STNEnvironmentSandbox]; */
+    /* } else if([environment isEqual: @"PRODUCTION"]) { */
+    /*     [STNConfig setEnvironment:STNEnvironmentProduction]; */
+    /* } */
 }
 
 - (void)validation:(CDVInvokedUrlCommand*)command {
