@@ -24,6 +24,7 @@
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />            
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
             <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -32,6 +33,7 @@
         </config-file>
 
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <resource-file src="src/android/libs/stone-sdk-2.5.9.aar" target="libs/stone-sdk-2.5.9.aar" />
         <source-file src="src/android/StoneSDK.java" target-dir="src/br/com/stone/cordova/sdk/" />
 
     </platform>
