@@ -31,7 +31,6 @@ import stone.providers.CancellationProvider;
 import stone.providers.LoadTablesProvider;
 import stone.providers.SendEmailProvider;
 import stone.providers.TransactionProvider;
-import stone.providers.DownloadTablesProvider;
 import stone.user.UserModel;
 import stone.utils.EmailClient;
 import stone.utils.GlobalInformations;
@@ -361,54 +360,55 @@ public class StoneSDK extends CordovaPlugin {
             public void onError() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), provider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
                 callbackContext.error(provider.getListOfErrors().toString());
-                if (provider.theListHasError(ErrorsEnum.NEED_LOAD_TABLES) == true) { // code 20
-                    final LoadTablesProvider loadTablesProvider = new LoadTablesProvider(StoneSDK.this.cordova.getActivity(), provider.getGcrRequestCommand(), GlobalInformations.getPinpadFromListAt(0));
-                    loadTablesProvider.setDialogMessage("Subindo as tabelas");
-                    loadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
-                    loadTablesProvider.setConnectionCallback(new StoneCallbackInterface() {
-                        public void onSuccess() {
-                            Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas atualizadas.", Toast.LENGTH_SHORT).show();
-                            callbackContext.error("Transação falhou");
-                        }
-
-                        public void onError() {
-                            /* Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro.", Toast.LENGTH_SHORT).show(); */
-                            callbackContext.error("Transação falhou");                        
-                        }
-                    });
-                    loadTablesProvider.execute();
-                } else {
-                  callbackContext.error("Transação falhou");                        
-                }
+                /* if (provider.theListHasError(ErrorsEnum.NEED_LOAD_TABLES) == true) { // code 20 */
+                /*     final LoadTablesProvider loadTablesProvider = new LoadTablesProvider(StoneSDK.this.cordova.getActivity(), provider.getGcrRequestCommand(), GlobalInformations.getPinpadFromListAt(0)); */
+                /*     loadTablesProvider.setDialogMessage("Subindo as tabelas"); */
+                /*     loadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao. */
+                /*     loadTablesProvider.setConnectionCallback(new StoneCallbackInterface() { */
+                /*         public void onSuccess() { */
+                /*             Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas atualizadas.", Toast.LENGTH_SHORT).show(); */
+                /*             callbackContext.error("Transação falhou"); */
+                /*         } */
+                /*  */
+                /*         public void onError() { */
+                /*             Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro.", Toast.LENGTH_SHORT).show(); */
+                /*             callbackContext.error("Transação falhou");                         */
+                /*         } */
+                /*     }); */
+                /*     loadTablesProvider.execute(); */
+                /* } else { */
+                /*   callbackContext.error("Transação falhou");                         */
+                /* } */
             }
         });
         provider.execute();
     }
 
     private void tablesDownload(final CallbackContext callbackContext) throws JSONException {
+        callbackContext.success("Nao ha tabelas para baixar, elas ja estao atualizadas.");      
 
         // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessario.
-        ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
-        if (!applicationCache.checkIfHasTables()) {
-            // Realiza processo de download das tabelas em sua totalidade.
-            final DownloadTablesProvider downloadTablesProvider = new DownloadTablesProvider(StoneSDK.this.cordova.getActivity(), Stone.getUserModel(0));
-            downloadTablesProvider.setDialogMessage("Baixando as tabelas, por favor aguarde");
-            downloadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao.
-            downloadTablesProvider.setConnectionCallback(new StoneCallbackInterface() {
-                public void onSuccess() {
-                    Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas baixadas com sucesso.", Toast.LENGTH_SHORT).show();
-                    callbackContext.success("Tabelas baixadas com sucesso.");
-                }
-
-                public void onError() {
-                    Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro ao baixar tabelas.", Toast.LENGTH_SHORT).show();
-                    callbackContext.error(downloadTablesProvider.getListOfErrors().toString());
-                }
-            });
-            downloadTablesProvider.execute();
-        } else {
-            callbackContext.success("Nao ha tabelas para baixar, elas ja estao atualizadas.");
-        }
+        /* ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity()); */
+        /* if (!applicationCache.checkIfHasTables()) { */
+        /*     // Realiza processo de download das tabelas em sua totalidade. */
+        /*     final DownloadTablesProvider downloadTablesProvider = new DownloadTablesProvider(StoneSDK.this.cordova.getActivity(), Stone.getUserModel(0)); */
+        /*     downloadTablesProvider.setDialogMessage("Baixando as tabelas, por favor aguarde"); */
+        /*     downloadTablesProvider.setWorkInBackground(false); // para dar feedback ao usuario ou nao. */
+        /*     downloadTablesProvider.setConnectionCallback(new StoneCallbackInterface() { */
+        /*         public void onSuccess() { */
+        /*             Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas baixadas com sucesso.", Toast.LENGTH_SHORT).show(); */
+        /*             callbackContext.success("Tabelas baixadas com sucesso."); */
+        /*         } */
+        /*  */
+        /*         public void onError() { */
+        /*             Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro ao baixar tabelas.", Toast.LENGTH_SHORT).show(); */
+        /*             callbackContext.error(downloadTablesProvider.getListOfErrors().toString()); */
+        /*         } */
+        /*     }); */
+        /*     downloadTablesProvider.execute(); */
+        /* } else { */
+        /*     callbackContext.success("Nao ha tabelas para baixar, elas ja estao atualizadas."); */
+        /* } */
 
     }
 
