@@ -8,6 +8,7 @@ repositories {
 dependencies {
     compile(name:'stone-sdk-2.5.9', ext:'aar')
     compile 'com.android.support:appcompat-v7:23.0.1'
+    comple 'com.thoughtworks.xstream:1.4.10'
 }
 
 android {
