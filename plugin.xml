@@ -33,7 +33,6 @@
         </config-file>
 
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-        <resource-file src="src/android/libs/stone-sdk-2.5.3.aar" target="libs/stone-sdk-2.5.3.aar" />
         <source-file src="src/android/StoneSDK.java" target-dir="src/br/com/stone/cordova/sdk/" />
 
     </platform>
