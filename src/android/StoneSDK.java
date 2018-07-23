@@ -314,7 +314,6 @@ public class StoneSDK extends CordovaPlugin {
     private void transaction(JSONArray data, final CallbackContext callbackContext) throws JSONException {
 
         String amount = data.getString(0);
-        final  String success_message = data.getString(3);
         System.out.println("getAmount: " + amount);
 
         // Cria o objeto de transacao. Usar o "GlobalInformations.getPinpadFromListAt"
