@@ -297,7 +297,7 @@
     NSString * date = transactionInfoProvider.dateString;
     NSString *holderName = transactionInfoProvider.cardHolderName;
     NSString *pan = transactionInfoProvider.pan;
-    NSString *cardbrand = [transactionInfoProvider.cardBrand lowercaseString];
+    NSString *cardbrand = [transactionInfoProvider.cardBrandString lowercaseString];
     NSString *authCode = transactionInfoProvider.authorisationCode;
     NSString *initKey = transactionInfoProvider.initiatorTransactionKey;
     NSString *rcptTransaction = transactionInfoProvider.receiptTransactionKey;
