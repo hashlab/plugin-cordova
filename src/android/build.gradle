@@ -1,6 +1,5 @@
 repositories {    
     jcenter()
-    google()
     maven { url "https://packagecloud.io/stone/sdk-android/maven2" }
 }
 
